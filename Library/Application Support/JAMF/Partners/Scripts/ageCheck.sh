@@ -6,7 +6,7 @@
 #     Description:  This script looks at the age of a password and warns user
 #                   based on daysToGiveNotice. A password older than maxage will
 #                   return a more stern message.
-#          Author:  Todd Houle <admin@peas-thoule.mgh.harvard.edu>
+#          Author:  Todd Houle
 #                   with revisions by Elliot Jordan <elliot@lindegroup.com>
 #         Created:  2014-05-07
 #   Last Modified:  2015-04-14

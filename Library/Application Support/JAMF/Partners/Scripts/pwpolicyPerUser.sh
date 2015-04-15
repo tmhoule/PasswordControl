@@ -6,7 +6,7 @@
 #     Description:  This script deploys pwpolicy to the currently logged in
 #                   user, not all users or global because that screws up other
 #                   stuff.
-#          Author:  Todd Houle <admin@peas-thoule.mgh.harvard.edu>
+#          Author:  Todd Houle
 #                   with revisions by Elliot Jordan <elliot@lindegroup.com>
 #         Created:  2014-05-15
 #   Last Modified:  2015-04-14
