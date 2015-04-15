@@ -19,8 +19,7 @@ currentLoggedInUsersCR="$(w -h | grep console| sort -u -t' ' -k1,1|awk '{print $
 " # To add CR
 
 # Loop through each user who is logged in
-printf %s "$currentLoggedInUsersCR" | while IFS=$'\n' read -r currentLoggedInUser
-for currentLoggedInUser in $currentLoggedInUsersCR; do
+printf %s "$currentLoggedInUsersCR" | while IFS=$'\n' read -r currentLoggedInUser; do
 
     echo "begining run on $currentLoggedInUser user"
     if [ "$currentLoggedInUser" == "root" ] ||  [ "$currentLoggedInUser" == "PHS Admin" ] ||  [ "$currentLoggedInUser" == "daemon" ]; then
@@ -40,7 +39,7 @@ for currentLoggedInUser in $currentLoggedInUsersCR; do
     	echo "policy exists for $currentLoggedInUser"
     else
     	echo "setting $currentLoggedInUser policy"
-        pwpolicy -u $currentLoggedInUser -setpolicy "requiresAlpha=1 requiresNumeric=1 minChars=8 usingHistory=4"
+        pwpolicy -u "$currentLoggedInUser" -setpolicy "requiresAlpha=1 requiresNumeric=1 minChars=8 usingHistory=4"
         touch "/Library/Application Support/JAMF/Partners/Library/passwordPolicyPerUser/$currentLoggedInUser"
     fi
 done
