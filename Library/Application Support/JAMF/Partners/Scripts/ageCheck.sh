@@ -22,11 +22,14 @@ if [ "$currentUser" = "root" ]; then
     exit
 fi
 
+# Determine OS version.
+OS_major=$(/usr/bin/sw_vers -productVersion | awk -F . '{print $1}')
+OS_minor=$(/usr/bin/sw_vers -productVersion | awk -F . '{print $2}')
+
 #get last change of password date
-OSVers=$(sysctl -n kern.osrelease | cut -d . -f 1)
-if [ $OSVers -gt 11 ]; then   #for os 10.8+
+if [[ "$OS_major" -eq 10 && "$OS_minor" -ge 8 ]]; then
     lastChangePW=$(dscl . -read "/Users/$currentUser" PasswordPolicyOptions |grep passwordLastSetTime -A1 |tail -1|awk -F T '{print $1}'|awk -F \> '{print $2}')
-elif [ $OSVers -eq 11 ]; then     #for os 10.7
+elif [[ "$OS_major" -eq 10 && "$OS_minor" -eq 7 ]]; then
     lastChangePW=$(dscl . -read "/Users/$currentUser" PasswordPolicyOptions |grep passwordTimestamp -A1 |tail -1|awk -F T '{print $1}'|awk -F \> '{print $2}')
 else
     echo "Unsupported OS Version"
@@ -34,7 +37,7 @@ else
 fi
 
 #if Terminal Notifier is installed, then use it
-if [ -f /Library/Application\ Support/JAMF/Partners/PEAS-Notifier.app/Contents/MacOS/PEAS-Notifier ] && [ $OSVers -gt 11 ]; then
+if [[ -f /Library/Application\ Support/JAMF/Partners/PEAS-Notifier.app/Contents/MacOS/PEAS-Notifier ]] && [[ "$OS_major" -eq 10 && "$OS_minor" -ge 8 ]]; then
     termNotifierExists="true"
     termNotifierPath="/Library/Application Support/JAMF/Partners/PEAS-Notifier.app/Contents/MacOS/PEAS-Notifier"
 fi
