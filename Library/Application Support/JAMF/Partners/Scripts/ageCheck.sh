@@ -43,18 +43,17 @@ if [[ -f /Library/Application\ Support/JAMF/Partners/PEAS-Notifier.app/Contents/
 fi
 
 #get current date and convert it to seconds
-DateNow=$(date +%Y-%m-%d)
-DateNowSecs=$(date -j -f "%Y-%m-%d" $DateNow "+%s")
+DateNowSecs=$(date "+%s")
 
 userID=$(id -u "$currentUser")  #for local accounts only
-if [ "$userID" -lt "500" ] || [ "$userID" -gt 1000 ] ;then
+if [ "$userID" -lt "500" ] || [ "$userID" -gt 1000 ]; then
     echo "This tool is for local accounts only."
     exit
 fi
 
 
 #If no last change date available (new account)
-if [ -z "$lastChangePW" ];then
+if [ -z "$lastChangePW" ]; then
     echo "$currentUser has no lastChangePW date"
 
 	/usr/bin/osascript <<-EOF3
@@ -74,7 +73,7 @@ else   #checking the age of password here againts limits
     daysOverExpired=$(( 90 - daysSinceChanged ))
      for dayToCheck in "${daysToGiveNotice[@]}"
      do
-	if [ $secondsSinceChanged -ge $dayToCheck ] && [ $secondsSinceChanged -lt $(( dayToCheck + 86400 )) ] ;then
+	if [ $secondsSinceChanged -ge $dayToCheck ] && [ $secondsSinceChanged -lt $(( dayToCheck + 86400 )) ]; then
         secsTillExpire=$(( maxage - secondsSinceChanged ))
 	daysTillExpire=$(( secsTillExpire / 60 / 60 / 24 ))
 	   if [ "$termNotifierExists" != "true" ]; then
@@ -96,7 +95,7 @@ EOF
 	   fi
       done
 
-    if [ $secondsSinceChanged -gt $maxage ] ;then
+    if [ $secondsSinceChanged -gt $maxage ]; then
 	    /usr/bin/osascript <<-EOF2
               tell application "System Events"
               activate
@@ -115,5 +114,3 @@ EOF2
 EOF4
     fi
 fi
-
-
