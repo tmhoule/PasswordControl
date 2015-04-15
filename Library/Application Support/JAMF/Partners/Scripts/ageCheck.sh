@@ -66,14 +66,14 @@ if [ -z "$lastChangePW" ];then
 EOF3
 else   #checking the age of password here againts limits
     lastChangePWSeconds=$(date -j -f "%Y-%m-%d" $lastChangePW "+%s")
-    secondsSinceChanged=$(( $DateNowSecs - $lastChangePWSeconds))
-    daysSinceChanged=$(( $secondsSinceChanged/60/60/24 ))
-    daysOverExpired=$((90-$daysSinceChanged))
+    secondsSinceChanged=$(( DateNowSecs - lastChangePWSeconds ))
+    daysSinceChanged=$(( secondsSinceChanged / 60 / 60 / 24 ))
+    daysOverExpired=$(( 90 - daysSinceChanged ))
      for dayToCheck in "${daysToGiveNotice[@]}"
      do
-	if [ $secondsSinceChanged -ge $dayToCheck ] && [ $secondsSinceChanged -lt $(($dayToCheck + 86400)) ] ;then
-        secsTillExpire=$(( $maxage - secondsSinceChanged ))
-	daysTillExpire=$(( $secsTillExpire/60/60/24 ))
+	if [ $secondsSinceChanged -ge $dayToCheck ] && [ $secondsSinceChanged -lt $(( dayToCheck + 86400 )) ] ;then
+        secsTillExpire=$(( maxage - secondsSinceChanged ))
+	daysTillExpire=$(( secsTillExpire / 60 / 60 / 24 ))
 	   if [ "$termNotifierExists" != "true" ]; then
 	    /usr/bin/osascript <<-EOF
               tell application "System Events"
