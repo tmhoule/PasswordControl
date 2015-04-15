@@ -75,14 +75,13 @@ if [ -z "$lastChangePW" ]; then
             set the current pane to pane id "com.apple.preferences.users"
         end tell
 EOF3
-else   # Checking the age of password here againts limits.
-    lastChangePWSeconds=$(date -j -f "%Y-%m-%d" $lastChangePW "+%s")
+else   # Checking the age of password here against limits.
+    lastChangePWSeconds=$(date -j -f "%Y-%m-%d" "$lastChangePW" "+%s")
     secondsSinceChanged=$(( DateNowSecs - lastChangePWSeconds ))
     daysSinceChanged=$(( secondsSinceChanged / 60 / 60 / 24 ))
-    daysOverExpired=$(( 90 - daysSinceChanged ))
 
     for dayToCheck in "${daysToGiveNotice[@]}"; do
-    	if [ $secondsSinceChanged -ge $dayToCheck ] && [ $secondsSinceChanged -lt $(( dayToCheck + 86400 )) ]; then
+    	if [ $secondsSinceChanged -ge "$dayToCheck" ] && [ $secondsSinceChanged -lt $(( dayToCheck + 86400 )) ]; then
             secsTillExpire=$(( maxage - secondsSinceChanged ))
         	daysTillExpire=$(( secsTillExpire / 60 / 60 / 24 ))
             if [ "$termNotifierExists" != "true" ]; then
